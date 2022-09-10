@@ -1,0 +1,32 @@
+{
+  "name": "tonlight",
+  "description": "Tools for interaction with TON Blockchain",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-specifier-resolution=node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fosper/tonlight.git"
+  },
+  "keywords": [
+    "tools",
+    "ton",
+    "blockchain"
+  ],
+  "author": {
+    "name": "Fosper",
+    "email": "fosper@icloud.com",
+    "url": "https://www.npmjs.com/~fosper"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fosper/tonlight/issues"
+  },
+  "homepage": "https://github.com/fosper/tonlight#readme",
+  "dependencies": {
+    "corelight": "^1.0.11"
+  }
+}
