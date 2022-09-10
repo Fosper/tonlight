@@ -63,22 +63,55 @@ const self = `${folderName}->test.js`;
     // console.log(run)
     // console.log(`\n`)
 
-    console.log(`Function 'emulate' (external):`)
-    run = await Tonlight.emulate(func, {
-        type: `internal`,
-        scCode: fs.readFileSync(path.resolve(`./test/sc.fc`), `utf-8`),
-        msgPayload: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`,
-        msgOp: 1,
-        // scStorage: `<b 0 32 u, 0 32 u, !publicKey B, b>`,
-        // msgBody: `<b !signature B, 0 32 u, -1 32 i, 0 32 u, 0 256 u, b>`,
-        // sysImportFee: `1000000000`
-        // keepFiles: true
-    })
-    console.log(run)
-    console.log(`\n`)
+    // console.log(`Function 'emulate' (external):`)
+    // run = await Tonlight.emulate(func, {
+    //     type: `external`,
+    //     msgType: `CommonMsgInfoRelaxed`,
+    //     msgBody: `<b b>`,
+    //     scAddressAnycast: false,
+    //     scAddress: `EQB36_EfYjFYMV8p_cxSYX61bA0FZ4B65ZNN6L8INY-5gL6w`,
+    //     scNc: `1000000000`,
+    //     scStorage: `<b b>`,
+    //     scCode: fs.readFileSync(path.resolve(`./test/sc.fc`), `utf-8`),
+    //     sysGasLimit: 1000000,
+    //     sysDateTs: corelight.getTs(true),
+    //     tmpDirPath: path.resolve(`./test/tmp`),
+    //     secureWords: [ `/var` ],
+    //     keepFiles: false,
+    //     sysImportFee: `0`
+    // })
+    // console.log(run)
+    // console.log(`\n`)
 
-    console.log(`Function 'emulate' (internal):`)
+    // console.log(`Function 'emulate' (internal):`)
+    // run = await Tonlight.emulate(func, {
+    //     type: `internal`,
+    //     msgType: `CommonMsgInfoRelaxed`,
+    //     msgBody: `<b b>`,
+    //     scAddressAnycast: false,
+    //     scAddress: `EQB36_EfYjFYMV8p_cxSYX61bA0FZ4B65ZNN6L8INY-5gL6w`,
+    //     scNc: `1000000000`,
+    //     scStorage: `<b b>`,
+    //     scCode: fs.readFileSync(path.resolve(`./test/sc.fc`), `utf-8`),
+    //     sysGasLimit: 1000000,
+    //     sysDateTs: corelight.getTs(true),
+    //     tmpDirPath: path.resolve(`./test/tmp`),
+    //     secureWords: [ `/var` ],
+    //     keepFiles: false,
 
-
-
+    //     msgAddressAnycast: false,
+    //     msgAddress: `EQCJ0sh9po5xnCF2bZq6KyY1PO1FyeIWT+NnFaME9H+nFW1H`,
+    //     msgNc: `1000000000`,
+    //     msgIhrDisabled: true,
+    //     msgBounce: true,
+    //     msgBounced: false,
+    //     msgCreatedLt: `0`,
+    //     msgCreatedAt: corelight.getTs(true) - 5,
+    //     msgOp: -1,
+    //     msgPayload: ``,
+    //     sysIhrFee: `0`,
+    //     sysFwdFee: `0`
+    // })
+    // console.log(run)
+    // console.log(`\n`)
 })()

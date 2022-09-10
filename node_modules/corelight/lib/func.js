@@ -1,3 +1,4 @@
+import { unlinkSync, rmSync } from 'fs'
 import { Readable, Writable } from 'stream'
 import corelight from '../index'
 
@@ -113,7 +114,6 @@ export default class {
                 }
             }
         }
-    
         let dump = []
         if (func) dumpSplit ? dump = [ ...func.result.dump ] : dump = func.result.dump
         let self = new this(iter, initiator, name, argums, dumpLevel, dumpFunc, dump)
@@ -268,12 +268,16 @@ export default class {
         }
 
         let stringCount = 0
+        let toRemove, isRemove = null
         for (let optVal of opt) {
             let optValType = corelight.getType(optVal)
             if (optValType === `String`) {
                 stringCount++
-                if (stringCount === 1) message = optVal
-                if (stringCount === 2) code = optVal
+                if (stringCount === 1) {
+                    message = optVal
+                } else if (stringCount === 2) {
+                    code = optVal
+                }
             } else if (optValType === `Number`) {
                 dumpLevel = optVal
             } else if (optValType === `Function` || optValType === `Null`) {
@@ -284,6 +288,21 @@ export default class {
                 }
                 if (corelight.getType(optVal.error.code) === `String`) {
                     code = optVal.error.code
+                }
+            } else if (optValType === `Array`) {
+                toRemove = optVal
+            } else if (optValType === `Boolean`) {
+                isRemove = optVal
+            }
+        }
+
+        if (isRemove) {
+            if (corelight.getType(toRemove) === `Array`) {
+                for (let pathToRemove of toRemove) {
+                    if (corelight.getType(pathToRemove) === `String`) {
+                        try { unlinkSync(pathToRemove) } catch (e) {}
+                        try { rmSync(pathToRemove, { recursive: true }) } catch (e) {}
+                    }
                 }
             }
         }

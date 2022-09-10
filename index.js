@@ -251,6 +251,7 @@ export default class {
             if (run.data.includes(`Error`)) { resolve(func.err(run.data, `1`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
 
             run = await corelight.try(func, readFileSync, [ fiftFilePath, `utf-8` ], func.opt.secureWords)
+
             if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             result.value = run.data
             
@@ -626,7 +627,7 @@ export default class {
      * 
      * If object.type = 'internal':
      * @param {boolean} @arg object.msgAddressAnycast - Default: false.
-     * @param {string} @arg object.msgAddress - Default: 'kQCJ0sh9po5xnCF2bZq6KyY1PO1FyeIWT-NnFaME9H-nFdbN'.
+     * @param {string} @arg object.msgAddress - Default: 'EQCJ0sh9po5xnCF2bZq6KyY1PO1FyeIWT+NnFaME9H+nFW1H'.
      * @param {string} @arg object.msgNc - Default: '1000000000'. Must be from 0 to 10 000 000 000 000 000 000.
      * @param {boolean} @arg object.msgIhrDisabled - Default: true.
      * @param {boolean} @arg object.msgBounce - Default: true.
@@ -722,6 +723,7 @@ export default class {
 
             await func.validate()
             if (func.result.error) { resolve(func.err()); return }
+
             func.opt.secureWords = func.opt.secureWords.concat(this.opt.secureWords)
             let run
 
@@ -758,6 +760,11 @@ export default class {
                 if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                 result.files = [ ...result.files, ...run.data.files ]
                 func.opt.scCode = run.data.value
+            }
+
+            if (corelight.getType(func.opt.scCode) !== `String`) {
+                resolve(func.err(`Incorrect smart contract code.`, `3`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles))
+                return
             }
 
             let privateKey, publicKey 
@@ -799,7 +806,7 @@ export default class {
             }
 
             run = await this.getCellBits(func, { cell: func.opt.msgBody, tmpDirPath: func.opt.tmpDirPath, secureWords: func.opt.secureWords, keepFiles: func.opt.keepFiles })
-            if (run.error) { resolve(func.err(`Message body more than 1023 bits.`, `3`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
+            if (run.error) { resolve(func.err(`Message body more than 1023 bits.`, `4`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             result.files = [ ...result.files, ...run.data.files ]
             msgBodyBits = parseInt(run.data.value)
 
@@ -941,7 +948,7 @@ export default class {
             result.files = [ ...result.files, ...run.data.files ]
 
             if (run.data.value.includes(`Command failed:`)) {
-                resolve(func.err(`Error while trying to get result.`, `3`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles))
+                resolve(func.err(`Error while trying to get result.`, `5`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles))
                 return
             }
 
