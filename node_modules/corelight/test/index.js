@@ -3,7 +3,7 @@ import path from 'path'
 import corelight from '../'
 
 const folderName = `test`
-const self = `${folderName}->test`;
+const self = `${folderName}->test.js`;
 
 (async (...opt) => {
     let func = corelight.func.init(self, opt, { dumpLevel: 2, initiator: `Run` })
