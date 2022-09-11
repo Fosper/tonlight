@@ -1,5 +1,5 @@
 import { readFileSync, mkdirSync, writeFileSync, rmSync } from 'fs'
-import corelight from './../corelight'
+import corelight from 'corelight'
 
 export default class {
     static self = `ton`
