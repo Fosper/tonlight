@@ -241,7 +241,7 @@ export default class {
 
             let isBigInt = (value, mustBePositive = false, mustBeNegative = false) => {
                 if (this.getType(value) !== `String`) return false
-                let availableChars = [ `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` ]
+                let availableChars = [ `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `-` ]
                 let chars = value.split(``)
                 let i = 0
                 for (let char of chars) {
@@ -706,7 +706,7 @@ export default class {
             if (func.result.error) { resolve(func.err()); return }
 
             func.opt.num = func.opt.num.toString()
-            let availableChars = [ `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` ]
+            let availableChars = [ `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `-` ]
             let chars = func.opt.num.split(``)
             let i = 0
             for (let char of chars) {
