@@ -248,7 +248,7 @@ export default class {
 
             run = await corelight.execCmd(func, `${this.opt.funcFilePath} -SPA ${this.opt.stdlibFilePath} ${funcFilePath} -o ${fiftFilePath}`, func.opt.secureWords)
             if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
-            if (run.data.includes(`Error`)) { resolve(func.err(run.data, `1`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
+            if (run.data.includes(`error`) || run.data.includes(`Error`)) { resolve(func.err(run.data, `1`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
 
             run = await corelight.try(func, readFileSync, [ fiftFilePath, `utf-8` ], func.opt.secureWords)
 
@@ -910,10 +910,14 @@ export default class {
                         b>`
                     }
 
-                    codeFift = `
+                    codeFift = `#!/usr/bin/fift -s
                     "TonUtil.fif" include
                     "Asm.fif" include
                     
+                    ${func.opt.msgBody} <s constant msg-body
+                    ${func.opt.scStorage} constant sc-storage
+                    ${func.opt.scCode.replaceAll(`}END>c`, `}END>s`)} constant sc-code
+
                     0x076ef1ea                             // magic
                     0                                      // actions
                     0                                      // msgs_sent
@@ -929,10 +933,10 @@ export default class {
                     ${func.opt.scNc}
                     ${func.opt.msgNc}
                     ${msgFull}
-                    ${func.opt.msgBody} <s
+                    msg-body
                     ${func.opt.type === `internal` ? `0` : `-1`}
-                    ${func.opt.scCode.replaceAll(`}END>c`, `}END>s`)}
-                    ${func.opt.scStorage}
+                    sc-code
+                    sc-storage
                     c7
                     ${func.opt.sysGasLimit}
                     0x7d runvmx`
