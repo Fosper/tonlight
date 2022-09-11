@@ -24,9 +24,15 @@ export default class {
      * @returns {number}
      */
     static getTs = (...opt) => {
+        let result = { data: null, error: null }
         let isShort = false
-        if (opt.length && this.getType(opt[0]) === `Boolean`) isShort = opt[0]
-        return isShort ? parseInt(Date.now().toString().substr(0, 10)) : Date.now()
+        if (opt.length && this.getType(opt[0]) !== `Boolean`) {
+            result.error = { message: `${this.self}->getTs: Argument must be type of 'String'.`, code: `1` }
+            return result
+        }
+        isShort = opt[0]
+        isShort ? result.data = parseInt(Date.now().toString().substr(0, 10)) : result.data = Date.now()
+        return result
     }
 
     /**
@@ -35,8 +41,34 @@ export default class {
      * @returns {boolean}
      */
     static isExistsPath = (...opt) => {
-        if (!opt.length || this.getType(opt[0]) !== `String`) return false
-        return existsSync(opt[0])
+        let result = { data: null, error: null }
+        if (!opt.length || this.getType(opt[0]) !== `String`) {
+            result.error = { message: `${this.self}->isExistsPath: Argument must be type of 'String'.`, code: `1` }
+            return result
+        }
+        result.data = existsSync(opt[0])
+        return result
+    }
+
+    /**
+     * @param {string} @arg value  - Default: undefined.
+     * 
+     * @returns {object}
+     */
+    static getObj = (...opt) => {
+        let result = { data: null, error: null }
+        if (!opt.length) {
+            result.error = { message: `${this.self}->getObj: Argument must be set.`, code: `1`, }
+            return result
+        }
+        if (this.getType(opt[0]) !== `String`) {
+            result.error = { message: `${this.self}->getObj: Argument must be type of 'String'.`, code: `2`, }
+            return result
+        }
+        try { result.data = JSON.parse(opt[0]); return result } catch (e) {
+            result.error = { message: `${this.self}->getObj: Can't get object.`, code: `3` }
+            return result
+        }
     }
 
     /**
@@ -449,12 +481,12 @@ export default class {
                             }
 
                             if (!valuesValueValue) {
-                                if (this.isExistsPath(optionValue)) {
+                                if (this.isExistsPath(optionValue).data) {
                                     resolve(func.err(`'options.${optionName}' (${optionValue}) path must be not exists, because 'availableValues.${optionName}.${valuesValueName}' (${valuesValueValue.toString()}).`, `23`, 2))
                                     return
                                 }
                             } else {
-                                if (!this.isExistsPath(optionValue)) {
+                                if (!this.isExistsPath(optionValue).data) {
                                     resolve(func.err(`'options.${optionName}' (${optionValue}) path must be exists, because 'availableValues.${optionName}.${valuesValueName}' (${valuesValueValue.toString()}).`, `24`, 2))
                                     return
                                 }

@@ -467,7 +467,7 @@ export default class {
 
             let isAddressInFile, isAddressBase64, isAddressRaw = false
             if (func.opt.address.substr(0, 1) === `/`) {
-                if (!corelight.isExistsPath(func.opt.address)) { resolve(func.err(`Address file must be exists.`, `1`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
+                if (!corelight.isExistsPath(func.opt.address).data) { resolve(func.err(`Address file must be exists.`, `1`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                 isAddressInFile = true
             } else if (func.opt.address.includes(`,`)) {
                 isAddressRaw = true
@@ -609,35 +609,35 @@ export default class {
 
     /**
      * @param {string} @arg object.type - Default: 'external'. Can be 'external' or 'internal'.
-     * @param {string} @arg object.msgType - Default: 'CommonMsgInfoRelaxed'. Can be 'CommonMsgInfo' or 'CommonMsgInfoRelaxed'.
-     * @param {string} @arg object.msgBody - Default: '<b b>'. Smart contract message body.
+     * @param {string} @arg object.scheme - Default: 'CommonMsgInfoRelaxed'. Can be 'CommonMsgInfo' or 'CommonMsgInfoRelaxed'.
+     * @param {string} @arg object.scNc - Default: '1000000000'. Must be from 0 to 10 000 000 000 000 000 000.
      * @param {boolean} @arg object.scAddressAnycast - Default: false.
      * @param {string} @arg object.scAddress - Default: 'EQB36_EfYjFYMV8p_cxSYX61bA0FZ4B65ZNN6L8INY-5gL6w'.
-     * @param {string} @arg object.scNc - Default: '1000000000'. Must be from 0 to 10 000 000 000 000 000 000.
-     * @param {string} @arg object.scStorage - Default: '<b b>'. Smart contract storage.
      * @param {string} @arg object.scCode - Required. Smart contract Fift or Func code.
+     * @param {string} @arg object.scStorage - Default: '<b b>'. Smart contract storage.
+     * @param {string} @arg object.msgBody - Default: '<b b>'. Smart contract message body.
      * @param {number} @arg object.sysGasLimit - Default: 1000000. Must be from 0 to 20 000 000.
-     * @param {number} @arg object.sysDateTs - Default: current timestamp.
+     * @param {number} @arg object.sysDateTs - Default: current timestamp. Must be from 0 to 4 294 967 295.
      * @param {string} @arg object.tmpDirPath - Default: this.opt.tmpDirPath.
      * @param {array} @arg object.secureWords - Default: []. Replace all match words in output to ''.
      * @param {boolean} @arg object.keepFiles - Default: this.opt.keepFiles.
      * 
      * If object.type = 'external':
-     * @param {string} @arg object.sysImportFee - Default: '0'. Must be from 0 to 10 000 000 000.
+     * @param {string} @arg object.msgImportFee - Default: '0'. Must be from 0 to 10 000 000 000.
      * 
      * If object.type = 'internal':
-     * @param {boolean} @arg object.msgAddressAnycast - Default: false.
-     * @param {string} @arg object.msgAddress - Default: 'EQCJ0sh9po5xnCF2bZq6KyY1PO1FyeIWT+NnFaME9H+nFW1H'.
-     * @param {string} @arg object.msgNc - Default: '1000000000'. Must be from 0 to 10 000 000 000 000 000 000.
      * @param {boolean} @arg object.msgIhrDisabled - Default: true.
      * @param {boolean} @arg object.msgBounce - Default: true.
      * @param {boolean} @arg object.msgBounced - Default: false.
+     * @param {boolean} @arg object.msgAddressAnycast - Default: false.
+     * @param {string} @arg object.msgAddress - Default: 'EQCJ0sh9po5xnCF2bZq6KyY1PO1FyeIWT+NnFaME9H+nFW1H'.
+     * @param {string} @arg object.msgNc - Default: '1000000000'. Must be from 0 to 10 000 000 000 000 000 000.
+     * @param {string} @arg object.msgIhrFee - Default: '0'. Must be from 0 to 10 000 000 000.
+     * @param {string} @arg object.msgFwdFee - Default: '0'. Must be from 0 to 10 000 000 000.
      * @param {string} @arg object.msgCreatedLt - Default: '0'. From 0 to 18 446 744 073 709 551 615.
      * @param {number} @arg object.msgCreatedAt - Default: current timestamp - 5.
      * @param {number} @arg object.msgOp - Default: -1. Must be from 0 to 4 294 967 295 if need to set op.
      * @param {string} @arg object.msgPayload - Default: ''.
-     * @param {string} @arg object.sysIhrFee - Default: '0'. Must be from 0 to 10 000 000 000.
-     * @param {string} @arg object.sysFwdFee - Default: '0'. Must be from 0 to 10 000 000 000.
      * 
      * @returns {promise}
      */
@@ -646,10 +646,10 @@ export default class {
             let func = corelight.func.init(`${this.constructor.self}->emulate`, opt)
                 .args()
             
-            let currentTs = corelight.getTs(true)
+            let currentTs = corelight.getTs(true).data
             func.default = {
                 type: `external`,
-                msgType: `CommonMsgInfoRelaxed`,
+                scheme: `CommonMsgInfoRelaxed`,
                 msgBody: `<b b>`,
                 scAddressAnycast: false,
                 scAddress: `EQB36_EfYjFYMV8p_cxSYX61bA0FZ4B65ZNN6L8INY-5gL6w`,
@@ -660,7 +660,7 @@ export default class {
                 tmpDirPath: this.opt.tmpDirPath,
                 secureWords: [],
                 keepFiles: this.opt.keepFiles,
-                sysImportFee: `0`,
+                msgImportFee: `0`,
                 msgAddressAnycast: false,
                 msgAddress: `EQCJ0sh9po5xnCF2bZq6KyY1PO1FyeIWT+NnFaME9H+nFW1H`,
                 msgNc: `1000000000`,
@@ -671,13 +671,13 @@ export default class {
                 msgCreatedAt: currentTs - 5,
                 msgOp: -1,
                 msgPayload: ``,
-                sysIhrFee: `0`,
-                sysFwdFee: `0`
+                msgIhrFee: `0`,
+                msgFwdFee: `0`
             }
 
             func.types = {
                 type: [ `String` ],
-                msgType: [ `String` ],
+                scheme: [ `String` ],
                 msgBody: [ `String` ],
                 scAddressAnycast: [ `Boolean` ],
                 scAddress: [ `String` ],
@@ -689,7 +689,7 @@ export default class {
                 tmpDirPath: [ `String` ],
                 secureWords: [ `Array` ],
                 keepFiles: [ `Boolean` ],
-                sysImportFee: [ `String` ],
+                msgImportFee: [ `String` ],
                 msgAddressAnycast: [ `Boolean` ],
                 msgAddress: [ `String` ],
                 msgNc: [ `String` ],
@@ -700,25 +700,25 @@ export default class {
                 msgCreatedAt: [ `Number` ],
                 msgOp: [ `Number`, `Null` ],
                 msgPayload: [ `String` ],
-                sysIhrFee: [ `String` ],
-                sysFwdFee: [ `String` ]
+                msgIhrFee: [ `String` ],
+                msgFwdFee: [ `String` ]
             }
 
             func.values = {
                 type: { values: [ `external`, `internal` ] },
-                msgType: { values: [ `CommonMsgInfoRelaxed`, `CommonMsgInfo` ] },
+                scheme: { values: [ `CommonMsgInfoRelaxed`, `CommonMsgInfo` ] },
                 scNc: { min: `0`, max: `10000000000000000000` },
                 scCode: { minLength: 1 },
                 sysGasLimit: { min: 0, max: 20000000 },
                 sysDateTs: { min: 0, max: 4294967295 },
                 tmpDirPath: { existPath: true },
-                sysImportFee: { min: `0`, max: `10000000000` },
+                msgImportFee: { min: `0`, max: `10000000000` },
                 msgNc: { min: `0`, max: `10000000000000000000` },
                 msgCreatedLt: { min: `0`, max: `18446744073709551615` },
                 msgCreatedAt: { min: 0, max: 4294967295 },
                 msgOp: { min: -1, max: 4294967295 },
-                sysIhrFee: { min: `0`, max: `10000000000` },
-                sysFwdFee: { min: `0`, max: `10000000000` }
+                msgIhrFee: { min: `0`, max: `10000000000` },
+                msgFwdFee: { min: `0`, max: `10000000000` }
             }
 
             await func.validate()
@@ -734,7 +734,7 @@ export default class {
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             let result = { value: null, files: [] }
             
-            if (func.opt.msgType !== `CommonMsgInfoRelaxed`) {
+            if (func.opt.scheme !== `CommonMsgInfoRelaxed`) {
                 resolve(func.err(`Message type must be 'CommonMsgInfoRelaxed', because other types not realized yet.`, `1`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles))
                 return
             }
@@ -812,11 +812,11 @@ export default class {
 
             let msgBodyInRef = false
             let msgFullBits, msgFull, codeFift
-            switch (func.opt.msgType) {
+            switch (func.opt.scheme) {
                 case `CommonMsgInfoRelaxed`:
                     if (func.opt.type === `external`) {
                         msgFullBits = 279
-                        run = await this.getCellBits(func, { cell: `<b ${func.opt.sysImportFee} Gram, b>`, tmpDirPath: func.opt.tmpDirPath, secureWords: func.opt.secureWords, keepFiles: func.opt.keepFiles })
+                        run = await this.getCellBits(func, { cell: `<b ${func.opt.msgImportFee} Gram, b>`, tmpDirPath: func.opt.tmpDirPath, secureWords: func.opt.secureWords, keepFiles: func.opt.keepFiles })
                         if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                         result.files = [ ...result.files, ...run.data.files ]
                         msgFullBits += parseInt(run.data.value)
@@ -836,7 +836,7 @@ export default class {
                                 ${scWc} 8 i,                        // workchain_id:int8
                                 ${scAddr} 256 u,                    // address:bits256
 
-                                ${func.opt.sysImportFee} Gram,      // import_fee:Grams
+                                ${func.opt.msgImportFee} Gram,      // import_fee:Grams
         
                             // init:(Maybe (Either StateInit ^StateInit))
                                 // Maybe
@@ -858,7 +858,7 @@ export default class {
                         b>`
                     } else {
                         msgFullBits = 637
-                        run = await this.getCellBits(func, { cell: `<b ${func.opt.msgNc} Gram, ${func.opt.sysIhrFee} Gram, ${func.opt.sysFwdFee} Gram, b>`, tmpDirPath: func.opt.tmpDirPath, secureWords: func.opt.secureWords, keepFiles: func.opt.keepFiles })
+                        run = await this.getCellBits(func, { cell: `<b ${func.opt.msgNc} Gram, ${func.opt.msgIhrFee} Gram, ${func.opt.msgFwdFee} Gram, b>`, tmpDirPath: func.opt.tmpDirPath, secureWords: func.opt.secureWords, keepFiles: func.opt.keepFiles })
                         if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                         result.files = [ ...result.files, ...run.data.files ]
                         msgFullBits += parseInt(run.data.value)
@@ -895,8 +895,8 @@ export default class {
                                 ${func.opt.msgNc} Gram,              // grams:Grams
                                 null dict,                           // other:ExtraCurrencyCollection
 
-                                ${func.opt.sysIhrFee} Gram,          // ihr_fee:Grams
-                                ${func.opt.sysFwdFee} Gram,          // fwd_fee:Grams
+                                ${func.opt.msgIhrFee} Gram,          // ihr_fee:Grams
+                                ${func.opt.msgFwdFee} Gram,          // fwd_fee:Grams
                                 ${func.opt.msgCreatedLt} 64 u,       // created_lt:uint64
                                 ${func.opt.msgCreatedAt} 32 u,       // created_at:uint32
                             

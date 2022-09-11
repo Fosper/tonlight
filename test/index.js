@@ -66,19 +66,19 @@ const self = `${folderName}->test.js`;
     // console.log(`Function 'emulate' (external):`)
     // run = await Tonlight.emulate(func, {
     //     type: `external`,
-    //     msgType: `CommonMsgInfoRelaxed`,
-    //     msgBody: `<b b>`,
+    //     scheme: `CommonMsgInfoRelaxed`,
+    //     scNc: `1000000000`,
     //     scAddressAnycast: false,
     //     scAddress: `EQB36_EfYjFYMV8p_cxSYX61bA0FZ4B65ZNN6L8INY-5gL6w`,
-    //     scNc: `1000000000`,
-    //     scStorage: `<b b>`,
     //     scCode: fs.readFileSync(path.resolve(`./test/sc.fc`), `utf-8`),
+    //     scStorage: `<b b>`,
+    //     msgBody: `<b b>`,
     //     sysGasLimit: 1000000,
-    //     sysDateTs: corelight.getTs(true),
+    //     sysDateTs: corelight.getTs(true).data,
     //     tmpDirPath: path.resolve(`./test/tmp`),
     //     secureWords: [ `/var` ],
     //     keepFiles: false,
-    //     sysImportFee: `0`
+    //     msgImportFee: `0`
     // })
     // console.log(run)
     // console.log(`\n`)
@@ -86,31 +86,31 @@ const self = `${folderName}->test.js`;
     // console.log(`Function 'emulate' (internal):`)
     // run = await Tonlight.emulate(func, {
     //     type: `internal`,
-    //     msgType: `CommonMsgInfoRelaxed`,
-    //     msgBody: `<b b>`,
+    //     scheme: `CommonMsgInfoRelaxed`,
+    //     scNc: `1000000000`,
     //     scAddressAnycast: false,
     //     scAddress: `EQB36_EfYjFYMV8p_cxSYX61bA0FZ4B65ZNN6L8INY-5gL6w`,
-    //     scNc: `1000000000`,
-    //     scStorage: `<b b>`,
     //     scCode: fs.readFileSync(path.resolve(`./test/sc.fc`), `utf-8`),
+    //     scStorage: `<b b>`,
+    //     msgBody: `<b b>`,
     //     sysGasLimit: 1000000,
-    //     sysDateTs: corelight.getTs(true),
+    //     sysDateTs: corelight.getTs(true).data,
     //     tmpDirPath: path.resolve(`./test/tmp`),
     //     secureWords: [ `/var` ],
     //     keepFiles: false,
 
-    //     msgAddressAnycast: false,
-    //     msgAddress: `EQCJ0sh9po5xnCF2bZq6KyY1PO1FyeIWT+NnFaME9H+nFW1H`,
-    //     msgNc: `1000000000`,
     //     msgIhrDisabled: true,
     //     msgBounce: true,
     //     msgBounced: false,
+    //     msgAddressAnycast: false,
+    //     msgAddress: `EQCJ0sh9po5xnCF2bZq6KyY1PO1FyeIWT+NnFaME9H+nFW1H`,
+    //     msgNc: `1000000000`,
+    //     msgIhrFee: `0`,
+    //     msgFwdFee: `0`,
     //     msgCreatedLt: `0`,
-    //     msgCreatedAt: corelight.getTs(true) - 5,
+    //     msgCreatedAt: corelight.getTs(true).data - 5,
     //     msgOp: -1,
-    //     msgPayload: ``,
-    //     sysIhrFee: `0`,
-    //     sysFwdFee: `0`
+    //     msgPayload: ``
     // })
     // console.log(run)
     // console.log(`\n`)

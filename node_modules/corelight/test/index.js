@@ -1,8 +1,9 @@
 import { createReadStream, createWriteStream, writeFileSync } from 'fs'
+import path from 'path'
 import corelight from '../'
 
 const folderName = `test`
-const self = `${folderName}->test.js`;
+const self = `${folderName}->test`;
 
 (async (...opt) => {
     let func = corelight.func.init(self, opt, { dumpLevel: 2, initiator: `Run` })
@@ -15,7 +16,17 @@ const self = `${folderName}->test.js`;
     // console.log(`\n`)
 
     // console.log(`Function 'getTs':`)
-    // run = await corelight.getTs()
+    // run = corelight.getTs().data
+    // console.log(run)
+    // console.log(`\n`)
+
+    // console.log(`Function 'isExistsPath':`)
+    // run = corelight.isExistsPath((path.resolve(`./test/index.js`))).data
+    // console.log(run)
+    // console.log(`\n`)
+
+    // console.log(`Function 'getObj':`)
+    // run = corelight.getObj(`{"test": 123}`).data
     // console.log(run)
     // console.log(`\n`)
 
