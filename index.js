@@ -162,7 +162,7 @@ export default class {
             run = await corelight.getRandStr(func)
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             func.opt.tmpDirPath = `${func.opt.tmpDirPath}/${func.iter}.${func.name.split(`>`)[1]}-${run.data}`
-            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             let result = { value: null, files: [] }
 
@@ -172,7 +172,7 @@ export default class {
             fiftFilePath = `${func.opt.tmpDirPath}/${run.data}.fif`
             result.files.push(fiftFilePath)
 
-            run = await corelight.try(func, writeFileSync, [ fiftFilePath , func.opt.code, `utf-8` ], func.opt.secureWords)
+            run = await corelight.try(func, writeFileSync, [ fiftFilePath , func.opt.code, `utf-8` ], { secureWords: func.opt.secureWords } )
             if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
 
             run = await corelight.execCmd(func, `${this.opt.fiftFilePath} -I ${this.opt.fiftLibDirPath} ${fiftFilePath}`, func.opt.secureWords)
@@ -181,7 +181,7 @@ export default class {
             result.value = run.data
 
             if (!func.opt.keepFiles) {
-                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
                 if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                 result.files = []
             }
@@ -229,7 +229,7 @@ export default class {
             run = await corelight.getRandStr(func)
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             func.opt.tmpDirPath = `${func.opt.tmpDirPath}/${func.iter}.${func.name.split(`>`)[1]}-${run.data}`
-            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             let result = { value: null, files: [] }
 
@@ -243,20 +243,20 @@ export default class {
             result.files.push(fiftFilePath)
             result.files.push(funcFilePath)
 
-            run = await corelight.try(func, writeFileSync, [ funcFilePath , func.opt.code, `utf-8` ], func.opt.secureWords)
+            run = await corelight.try(func, writeFileSync, [ funcFilePath , func.opt.code, `utf-8` ], { secureWords: func.opt.secureWords } )
             if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
 
             run = await corelight.execCmd(func, `${this.opt.funcFilePath} -SPA ${this.opt.stdlibFilePath} ${funcFilePath} -o ${fiftFilePath}`, func.opt.secureWords)
             if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             if (run.data.includes(`error`) || run.data.includes(`Error`)) { resolve(func.err(run.data, `1`, 2, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
 
-            run = await corelight.try(func, readFileSync, [ fiftFilePath, `utf-8` ], func.opt.secureWords)
+            run = await corelight.try(func, readFileSync, [ fiftFilePath, `utf-8` ], { secureWords: func.opt.secureWords } )
 
             if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             result.value = run.data
             
             if (!func.opt.keepFiles) {
-                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
                 if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                 result.files = []
             }
@@ -302,7 +302,7 @@ export default class {
             run = await corelight.getRandStr(func)
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             func.opt.tmpDirPath = `${func.opt.tmpDirPath}/${func.iter}.${func.name.split(`>`)[1]}-${run.data}`
-            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             let result = { privateKey: null, publicKey: null, files: [] }
 
@@ -333,7 +333,7 @@ export default class {
             result.publicKey = run.data.value[2].replaceAll(`\n`, ``).replaceAll(` `, ``)
 
             if (!func.opt.keepFiles) {
-                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
                 if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                 result.files = []
             }
@@ -383,7 +383,7 @@ export default class {
             run = await corelight.getRandStr(func)
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             func.opt.tmpDirPath = `${func.opt.tmpDirPath}/${func.iter}.${func.name.split(`>`)[1]}-${run.data}`
-            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             let result = { value: null, files: [] }
 
@@ -409,7 +409,7 @@ export default class {
             result.value = run.data.value[1].replaceAll(`\n`, ``).replaceAll(` `, ``)
 
             if (!func.opt.keepFiles) {
-                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
                 if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                 result.files = []
             }
@@ -461,7 +461,7 @@ export default class {
             run = await corelight.getRandStr(func)
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             func.opt.tmpDirPath = `${func.opt.tmpDirPath}/${func.iter}.${func.name.split(`>`)[1]}-${run.data}`
-            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             let result = { wc: null, address: null, wcBits: 8, files: [] }
 
@@ -530,7 +530,7 @@ export default class {
             }
 
             if (!func.opt.keepFiles) {
-                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
                 if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                 result.files = []
             }
@@ -578,7 +578,7 @@ export default class {
             run = await corelight.getRandStr(func)
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             func.opt.tmpDirPath = `${func.opt.tmpDirPath}/${func.iter}.${func.name.split(`>`)[1]}-${run.data}`
-            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             let result = { value: null, files: [] }
 
@@ -597,7 +597,7 @@ export default class {
             if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
 
             if (!func.opt.keepFiles) {
-                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
                 if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                 result.files = []
             }
@@ -730,7 +730,7 @@ export default class {
             run = await corelight.getRandStr(func)
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             func.opt.tmpDirPath = `${func.opt.tmpDirPath}/${func.iter}.${func.name.split(`>`)[1]}-${run.data}`
-            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+            run = await corelight.try(func, mkdirSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
             if (func.result.err) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
             let result = { value: null, files: [] }
             
@@ -959,7 +959,7 @@ export default class {
             result.value = run.data.value
 
             if (!func.opt.keepFiles) {
-                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], func.opt.secureWords)
+                run = await corelight.try(func, rmSync, [ func.opt.tmpDirPath, { recursive: true } ], { secureWords: func.opt.secureWords } )
                 if (run.error) { resolve(func.err(run, [ func.opt.tmpDirPath ], !func.opt.keepFiles)); return }
                 result.files = []
             }
