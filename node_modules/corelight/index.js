@@ -682,7 +682,9 @@ export default class {
 
             let run, run2
             let area = this
-            if (this.getType(func.opt.area) === `Object`) area = func.opt.area
+            let areaType = this.getType(func.opt.area)
+            if (areaType === `Object` || areaType === `Function` || areaType === `AsyncFunction`) area = func.opt.area
+
             try {
                 run = func.opt.func.apply(area, func.opt.args)
                 if (this.getType(run) === `Promise`) {
