@@ -121,6 +121,11 @@ export default class {
 
                 if (func.opt.defaultPure && !defaultOptionExist) continue
 
+                if (!defaultOptionExist) {
+                    newOptions[optionName] = optionValue
+                    continue
+                }
+
                 if (optionValueType === `Object` && !(optionValue instanceof Readable) && !(optionValue instanceof Writable)) {
                     run = await this.getDefaultOptions(func, optionValue, defaultOptionValue, { defaultMatch: func.opt.defaultMatch, defaultPrimary: func.opt.defaultPrimary, defaultPure: func.opt.defaultPure })
                     if (run.error) {
@@ -177,6 +182,8 @@ export default class {
                     resolve(func.err(`'options.${optionName}' must be defined in types options, because option 'typesMatch' is true.`, `1`, 2))
                     return
                 }
+
+                if (!availableTypesExist) continue
 
                 if (optionValueType === `Object` && !(optionValue instanceof Readable) && !(optionValue instanceof Writable)) {
                     run = await this.isAvailableTypes(func, optionValue, availableTypesValue, { typesMatch: func.opt.typesMatch })
@@ -311,6 +318,8 @@ export default class {
                     resolve(func.err(`'options.${optionName}' must be defined in types options, because option 'valuesMatch' is true.`, `1`, 2))
                     return
                 }
+
+                if (!valuesValueExist) continue
 
                 if (optionValueType === `Object` && !(optionValue instanceof Readable) && !(optionValue instanceof Writable)) {
                     run = await this.isAvailableValues(func, optionValue, valuesValue, { valuesMatch: func.opt.valuesMatch })
@@ -555,6 +564,7 @@ export default class {
                 resolve(func.err(run))
                 return
             }
+
             run = await this.isAvailableValues(func, func.opt.options, func.opt.values, { valuesMatch: func.opt.valuesMatch })
             if (run.error) {
                 resolve(func.err(run))
@@ -643,7 +653,8 @@ export default class {
     /**
      * @param {function} @arg func - Default: () => {}.
      * @param {array} @arg args  - Default: [].
-     * @param {array} @arg secureWords - Default: []. Secure words.
+     * @param {object} @arg object.secureWords - Default: []. Secure words.
+     * @param {object} @arg object.area - Default: this. For choose area of function.
      * 
      * @returns {promise}
      */
@@ -652,7 +663,7 @@ export default class {
             let func = this.func.init(`${this.self}->try`, opt)
                 .args(`func`)
                 .args(`args`)
-                .args(`secureWords`)
+                .args()
 
             func.default = {
                 func: () => {},
@@ -670,8 +681,10 @@ export default class {
             if (func.result.error) { resolve(func.err()); return }
 
             let run, run2
+            let area = this
+            if (this.getType(func.opt.area) === `Object`) area = func.opt.area
             try {
-                run = func.opt.func.apply(this, func.opt.args)
+                run = func.opt.func.apply(area, func.opt.args)
                 if (this.getType(run) === `Promise`) {
                     run.then(async (res) => {
                         if (func.opt.secureWords.length && this.getType(res) === `String`) {
